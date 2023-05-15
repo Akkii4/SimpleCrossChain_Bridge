@@ -5,11 +5,11 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 /**
- * @title CustomToken
+ * @title CustomTokenL2
  * @dev A custom ERC20 token contract with burn and mint functionalities,
  *      only accessible by a designated bridge address.
  */
-contract CustomToken is ERC20, ERC20Burnable {
+contract CustomTokenL2 is ERC20, ERC20Burnable {
     address public bridgeL2;
 
     /**
