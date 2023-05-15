@@ -24,7 +24,7 @@ contract CustomTokenL2 is ERC20, ERC20Burnable {
      * @dev Constructor function.
      * @param _bridgeL2 The address of the designated bridge contract.
      */
-    constructor(address _bridgeL2) ERC20("CustomTokenChild", "CTK") {
+    constructor(address _bridgeL2) ERC20("CustomTokenL2", "CTK") {
         bridgeL2 = _bridgeL2;
     }
 
