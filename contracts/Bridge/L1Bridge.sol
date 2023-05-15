@@ -3,6 +3,10 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+/**
+ * @title Layer1Bridge
+ * @dev A smart contract for bridging tokens from Layer 1 to Layer 2.
+ */
 contract Layer1Bridge {
     IERC20 private tokenL1;
 
@@ -22,6 +26,9 @@ contract Layer1Bridge {
         uint timestamp
     );
 
+    /**
+     * @dev Modifier to restrict access to cross-chain validators only.
+     */
     modifier onlyCrossChainValidators() {
         require(
             msg.sender == crossChainValidators,
@@ -30,11 +37,22 @@ contract Layer1Bridge {
         _;
     }
 
+    /**
+     * @dev Constructor function for Layer1Bridge.
+     * @param _tokenL1 The address of the ERC20 token contract on Layer 1.
+     * @param _gateway The address of the cross-chain gateway contract.
+     */
     constructor(address _tokenL1, address _gateway) {
         tokenL1 = IERC20(_tokenL1);
         crossChainValidators = _gateway;
     }
 
+    /**
+     * @dev Locks tokens on Layer 1 and emits an event.
+     * @param _receiver The address of the receiver of the bridged tokens.
+     * @param _bridgedAmount The amount of tokens to be bridged.
+     * @param _layer1DepositHash The deposit hash generated on Layer 1.
+     */
     function lockTokens(
         address _receiver,
         uint _bridgedAmount,
@@ -49,6 +67,12 @@ contract Layer1Bridge {
         );
     }
 
+    /**
+     * @dev Unlocks tokens on Layer 1 and emits an event.
+     * @param _receiver The address of the receiver of the unlocked tokens.
+     * @param _bridgedAmount The amount of tokens to be unlocked.
+     * @param _layer2DepositHash The deposit hash generated on Layer 2.
+     */
     function unlockTokens(
         address _receiver,
         uint _bridgedAmount,
