@@ -40,11 +40,11 @@ contract L1Bridge {
     /**
      * @dev Constructor function for Layer1Bridge.
      * @param _tokenL1 The address of the ERC20 token contract on Layer 1.
-     * @param _gateway The address of the cross-chain gateway contract.
+     * @param _crossChainValidators The address of the cross-chain crossChainValidators contract.
      */
-    constructor(address _tokenL1, address _gateway) {
+    constructor(address _tokenL1, address _crossChainValidators) {
         tokenL1 = IERC20(_tokenL1);
-        crossChainValidators = _gateway;
+        crossChainValidators = _crossChainValidators;
     }
 
     /**
