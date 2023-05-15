@@ -4,10 +4,10 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /**
- * @title Layer1Bridge
+ * @title L1Bridge
  * @dev A smart contract for bridging tokens from Layer 1 to Layer 2.
  */
-contract Layer1Bridge {
+contract L1Bridge {
     IERC20 private tokenL1;
 
     address public crossChainValidators;
