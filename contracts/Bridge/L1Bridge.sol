@@ -58,7 +58,7 @@ contract L1Bridge {
         uint _bridgedAmount,
         bytes32 _layer1DepositHash
     ) external onlyCrossChainValidators {
-        tokenL1.transferFrom(msg.sender, _receiver, _bridgedAmount);
+        tokenL1.transferFrom(_receiver, address(this), _bridgedAmount);
         emit TokensLocked(
             _receiver,
             _layer1DepositHash,
