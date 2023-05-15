@@ -1,32 +1,36 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+const { ethers } = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const [deployer] = await ethers.getSigners();
 
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
+  // Deploy CustomToken contract
+  const CustomToken = await ethers.getContractFactory("CustomToken");
+  const customToken = await CustomToken.deploy();
+  await customToken.deployed();
+  console.log("CustomToken deployed to:", customToken.address);
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  // Deploy CustomTokenL2 contract
+  const CustomTokenL2 = await ethers.getContractFactory("CustomTokenL2");
+  const customTokenL2 = await CustomTokenL2.deploy(deployer.address);
+  await customTokenL2.deployed();
+  console.log("CustomTokenL2 deployed to:", customTokenL2.address);
 
-  await lock.deployed();
+  // Deploy L1Bridge contract
+  const L1Bridge = await ethers.getContractFactory("L1Bridge");
+  const l1Bridge = await L1Bridge.deploy(customToken.address, deployer.address);
+  await l1Bridge.deployed();
+  console.log("L1Bridge deployed to:", l1Bridge.address);
 
-  console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+  // Deploy L2Bridge contract
+  const L2Bridge = await ethers.getContractFactory("L2Bridge");
+  const l2Bridge = await L2Bridge.deploy(deployer.address);
+  await l2Bridge.deployed();
+  console.log("L2Bridge deployed to:", l2Bridge.address);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
